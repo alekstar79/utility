@@ -1,0 +1,8 @@
+node_modules/
+__tests__/
+jest.config.ts
+tsconfig*.json
+vite.config.ts
+yarn.lock
+coverage/
+!.npmignore
