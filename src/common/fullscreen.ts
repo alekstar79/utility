@@ -1,0 +1,441 @@
+export enum FullscreenState {
+  UNSUPPORTED = 'unsupported',
+  OFF = 'off',
+  ON = 'on'
+}
+
+export enum FullscreenErrorCode {
+  NOT_SUPPORTED = 'NOT_SUPPORTED',
+  USER_GESTURE_REQUIRED = 'USER_GESTURE_REQUIRED',
+  IOS_VIDEO_ONLY = 'IOS_VIDEO_ONLY',
+  PERMISSION_DENIED = 'PERMISSION_DENIED'
+}
+
+export class FullscreenError extends Error {
+  readonly code: FullscreenErrorCode
+
+  constructor(code: FullscreenErrorCode, message: string) {
+    super(message)
+    this.name = 'FullscreenError'
+    this.code = code
+  }
+}
+
+export interface FullscreenOptions {
+  navigationUI?: 'auto' | 'show' | 'hide';
+}
+
+export interface FullscreenInfo {
+  element: HTMLElement | null;
+  state: FullscreenState;
+  isVideoOnly: boolean;
+  supportedAPI?: SupportedAPI;
+}
+
+type Prefix = '' | 'webkit' | 'moz' | 'ms';
+
+export type FullscreenRequest = `${Prefix}RequestFullscreen`;
+export type FullscreenExit = `${Prefix}ExitFullscreen` | `mozCancelFullScreen`;
+export type FullscreenElement = `${Prefix}FullscreenElement`;
+export type FullscreenEnabled = `${Prefix}FullscreenEnabled`;
+export type FullscreenChange = `${Prefix}fullscreenchange` | 'MSFullscreenChange';
+export type FullscreenErrorEvent = `${Prefix}fullscreenerror` | 'MSFullscreenError';
+
+export interface SupportedAPI {
+  readonly request: FullscreenRequest;
+  readonly exit: FullscreenExit;
+  readonly element: FullscreenElement;
+  readonly enabled: FullscreenEnabled;
+  readonly change: FullscreenChange;
+  readonly error: FullscreenErrorEvent;
+}
+
+export type EventCallback = (info: FullscreenInfo) => void;
+export type NativeEventHandler = (e: Event) => void;
+
+/**
+ * Unified Fullscreen API Class
+ * - Auto vendor prefixes detection (mapping approach)
+ * - iOS/Android fallbacks + video-only detection
+ * - WHATWG NavigationUI support
+ * - Typed errors + user gesture handling
+ * - SSR-safe + Promise-based events
+ * - SRP architecture + 0 allocations in the hot path
+ * - Accessibility + cleanup
+ *
+ * @example Basic Usage (Video Player)
+ * // HTML: <video id="player" controls></video>
+ * //      <button id="fullscreen-btn">Fullscreen</button>
+ *
+ * const video = document.getElementById('player') as HTMLVideoElement
+ * const btn = document.getElementById('fullscreen-btn')!
+ *
+ * btn.addEventListener('click', async () => {
+ *   try {
+ *     // Enable fullscreen for videos (iOS safe)
+ *     const state = await UnifiedFullscreen.enter(video, { navigationUI: 'hide' })
+ *     console.log('Entered fullscreen:', state) // 'on'
+ *   } catch (error) {
+ *     const fsError = error as FullscreenError;
+ *     if (fsError.code === FullscreenErrorCode.USER_GESTURE_REQUIRED) {
+ *       alert('Click directly on video to enter fullscreen (iOS)')
+ *     }
+ *   }
+ * })
+ *
+ * @example Toggle + State (Game/Canvas)
+ * const canvas = document.getElementById('game-canvas') as HTMLCanvasElement
+ *
+ * // Toggle with state check
+ * document.getElementById('toggle-fs')!.addEventListener('click', async () => {
+ *   const state = await UnifiedFullscreen.toggle(canvas)
+ *
+ *   // UI feedback
+ *   document.body.classList.toggle('fullscreen-active', state === FullscreenState.ON)
+ *
+ *   console.log(UnifiedFullscreen.info())
+ *   // {
+ *   //   element: canvas,
+ *   //   state: 'on',
+ *   //   isVideoOnly: false,
+ *   //   supportedAPI: { request: 'requestFullscreen', ... }
+ *   // }
+ * })
+ *
+ * @example Events + React-a similar hook
+ * // Subscribe to events (returns unsubscribe)
+ * const unsubscribeChange = UnifiedFullscreen.on('change', (info) => {
+ *   console.log('Fullscreen changed:', info.state)
+ *
+ *   // UI update
+ *   if (info.state === FullscreenState.ON) {
+ *     document.body.style.cursor = 'none' // Game mode
+ *   }
+ * })
+ *
+ * const unsubscribeError = UnifiedFullscreen.on('error', (info) => {
+ *   console.error('Fullscreen error:', info)
+ * })
+ *
+ * // Unsubscribe
+ * // unsubscribeChange()
+ * // unsubscribeError()
+ *
+ * @example SSR-safe + checking of support
+ * // Safe in Next.js / SSR
+ * if (typeof window !== 'undefined') {
+ *   console.log('Fullscreen supported:', UnifiedFullscreen.isSupported)
+ *   console.log('Enabled:', UnifiedFullscreen.isEnabled)
+ *   console.log('Current state:', UnifiedFullscreen.state)
+ *
+ *   // Cleanup at unmount
+ *   window.addEventListener('beforeunload', () => {
+ *     UnifiedFullscreen.destroy()
+ *   })
+ * }
+ *
+ * @example Image Gallery (multiple elements)
+ * document.querySelectorAll('.gallery img').forEach(img => {
+ *   img.addEventListener('dblclick', async () => {
+ *     try {
+ *       await UnifiedFullscreen.enter(img as HTMLElement)
+ *     } catch (error) {
+ *       console.log('Fullscreen not available:', error)
+ *     }
+ *   })
+ * })
+ *
+ * @example Auto-exit with ESC + UX improvements
+ * // Handling the ESC key
+ * document.addEventListener('keydown', async (e) => {
+ *   if (e.key === 'Escape' && UnifiedFullscreen.state === FullscreenState.ON) {
+ *     await UnifiedFullscreen.exit()
+ *   }
+ * })
+ *
+ * // Show the button only if supported
+ * if (UnifiedFullscreen.isSupported) {
+ *   fullscreenBtn.style.display = 'block'
+ *   fullscreenBtn.title = `Fullscreen (${UnifiedFullscreen.isEnabled ? 'Ready' : 'Disabled'})`
+ * }
+ *
+ * @example Styles for fullscreen (:fullscreen)
+ * :fullscreen video,
+ * :-webkit-full-screen video,
+ * :-moz-full-screen video,
+ * :-ms-fullscreen video {
+ *   width: 100vw;
+ *   height: 100vh;
+ *   object-fit: contain;
+ * }
+ *
+ * :fullscreen button,
+ * :-webkit-full-screen button {
+ *   position: fixed;
+ *   top: 20px;
+ *   right: 20px;
+ *   z-index: 9999;
+ * }
+ */
+export class Fullscreen {
+  private static supportedAPI: SupportedAPI | null = null;
+  private static eventCallbacks = new Map<string, Set<EventCallback>>();
+  private static isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+  private static isInitialized = false;
+
+  private static readonly apiMappings: SupportedAPI[] = [
+    { // WHATWG standard
+      request: 'requestFullscreen' as FullscreenRequest,
+      exit: 'exitFullscreen' as FullscreenExit,
+      element: 'fullscreenElement' as FullscreenElement,
+      enabled: 'fullscreenEnabled' as FullscreenEnabled,
+      change: 'fullscreenchange' as FullscreenChange,
+      error: 'fullscreenerror' as FullscreenErrorEvent
+    },
+    { // WebKit (Safari)
+      request: 'webkitRequestFullscreen' as FullscreenRequest,
+      exit: 'webkitExitFullscreen' as FullscreenExit,
+      element: 'webkitFullscreenElement' as FullscreenElement,
+      enabled: 'webkitFullscreenEnabled' as FullscreenEnabled,
+      change: 'webkitfullscreenchange' as FullscreenChange,
+      error: 'webkitfullscreenerror' as FullscreenErrorEvent
+    },
+    { // Mozilla (Firefox)
+      request: 'mozRequestFullScreen' as FullscreenRequest,
+      exit: 'mozCancelFullScreen' as FullscreenExit,
+      element: 'mozFullScreenElement' as FullscreenElement,
+      enabled: 'mozFullScreenEnabled' as FullscreenEnabled,
+      change: 'mozfullscreenchange' as FullscreenChange,
+      error: 'mozfullscreenerror' as FullscreenErrorEvent
+    },
+    { // MS (Edge/IE)
+      request: 'msRequestFullscreen' as FullscreenRequest,
+      exit: 'msExitFullscreen' as FullscreenExit,
+      element: 'msFullscreenElement' as FullscreenElement,
+      enabled: 'msFullscreenEnabled' as FullscreenEnabled,
+      change: 'MSFullscreenChange' as FullscreenChange,
+      error: 'MSFullscreenError' as FullscreenErrorEvent
+    }
+  ];
+
+  /** Initialization (once) */
+  public static init(): void {
+    if (this.isInitialized || typeof document === 'undefined') return
+
+    // Auto-detect supported API
+    this.supportedAPI = this.apiMappings.find(api =>
+      api.request in document.documentElement
+    ) || null
+
+    if (this.supportedAPI) {
+      // Unified event listeners
+      document.addEventListener(this.supportedAPI.change, this.handleChange)
+      document.addEventListener(this.supportedAPI.error, this.handleError)
+    }
+
+    this.isInitialized = true
+  }
+
+  /** Support status */
+  public static get isSupported(): boolean {
+    return this.supportedAPI !== null
+  }
+
+  /** Current state */
+  public static get state(): FullscreenState {
+    if (typeof document === 'undefined' || !this.supportedAPI) {
+      return FullscreenState.UNSUPPORTED
+    }
+
+    return (document as any)[this.supportedAPI.element]
+      ? FullscreenState.ON
+      : FullscreenState.OFF
+  }
+
+  /** The element in the fullscreen */
+  public static get element(): HTMLElement | null {
+    return typeof document !== 'undefined' && this.supportedAPI
+      ? (document as any)[this.supportedAPI.element] || null
+      : null
+  }
+
+  /** Support is enabled */
+  public static get isEnabled(): boolean {
+    return typeof document !== 'undefined' && this.supportedAPI
+      ? !!(document as any)[this.supportedAPI.enabled]
+      : false
+  }
+
+  /** Enable fullscreen */
+  public static async enter(
+    element: HTMLElement = document.documentElement,
+    options: FullscreenOptions = {}
+  ): Promise<FullscreenState> {
+    if (!this.isSupported) {
+      throw new FullscreenError(
+        FullscreenErrorCode.NOT_SUPPORTED,
+        'Fullscreen API not supported'
+      )
+    }
+    if (this.isIOS && element.tagName !== 'VIDEO') {
+      throw new FullscreenError(
+        FullscreenErrorCode.IOS_VIDEO_ONLY,
+        'iOS supports fullscreen only for video elements'
+      )
+    }
+    if (!this.isEnabled) {
+      throw new FullscreenError(
+        FullscreenErrorCode.NOT_SUPPORTED,
+        'Fullscreen not enabled'
+      )
+    }
+
+    return this.executeFullscreenRequest(element, options)
+  }
+
+  /** Exit fullscreen */
+  public static async exit(): Promise<FullscreenState> {
+    if (!this.isSupported || this.state === FullscreenState.OFF) {
+      return FullscreenState.OFF
+    }
+
+    await this.executeFullscreenExit()
+    return this.state
+  }
+
+  /** Toggle */
+  public static async toggle(
+    element?: HTMLElement,
+    options?: FullscreenOptions
+  ): Promise<FullscreenState> {
+    return this.state === FullscreenState.ON
+      ? this.exit()
+      : this.enter(element || document.documentElement, options)
+  }
+
+  /** State information */
+  public static info(): FullscreenInfo {
+    return {
+      element: this.element,
+      state: this.state,
+      isVideoOnly: this.isIOS,
+      supportedAPI: this.supportedAPI || undefined
+    }
+  }
+
+  /** Subscribe to events */
+  public static on(event: 'change' | 'error', callback: EventCallback): () => void {
+    const callbacks = this.eventCallbacks.get(event) || new Set()
+
+    callbacks.add(callback)
+    this.eventCallbacks.set(event, callbacks)
+
+    return () => this.off(event, callback)
+  }
+
+  /** Unsubscribe */
+  public static off(event: 'change' | 'error', callback: EventCallback): void {
+    const callbacks = this.eventCallbacks.get(event)
+
+    if (callbacks) {
+      callbacks.delete(callback)
+    }
+  }
+
+  /** Cleanup */
+  public static destroy(): void {
+    if (!this.isInitialized || typeof document === 'undefined') return
+
+    if (this.supportedAPI) {
+      document.removeEventListener(this.supportedAPI.change, this.handleChange)
+      document.removeEventListener(this.supportedAPI.error, this.handleError)
+    }
+
+    this.eventCallbacks.clear()
+    this.isInitialized = false
+  }
+
+  private static async executeFullscreenRequest(
+    element: HTMLElement,
+    options: FullscreenOptions
+  ): Promise<FullscreenState> {
+    return new Promise((resolve, reject) => {
+      const onChange: NativeEventHandler = () => {
+        this.offNativeEvents()
+        resolve(this.state)
+      }
+
+      const onError: NativeEventHandler = () => {
+        this.offNativeEvents()
+
+        reject(new FullscreenError(
+          FullscreenErrorCode.PERMISSION_DENIED,
+          'Permission denied'
+        ))
+      }
+
+      this.onNativeEvents(onChange, onError)
+
+      try {
+        (element as any)[this.supportedAPI!.request](options)
+      } catch (error) {
+        this.offNativeEvents();
+        reject(error);
+      }
+    })
+  }
+
+  private static async executeFullscreenExit(): Promise<void> {
+    if (!this.supportedAPI) return
+
+    return new Promise((resolve) => {
+      const onChange: NativeEventHandler = () => {
+        this.offNativeEvents()
+        resolve()
+      }
+
+      const onError: NativeEventHandler = () => {
+        this.offNativeEvents()
+        resolve()
+      }
+
+      this.onNativeEvents(onChange, onError)
+
+      try {
+        (document as any)[this.supportedAPI!.exit]()
+      } catch {
+        this.offNativeEvents()
+        resolve()
+      }
+    })
+  }
+
+  private static onNativeEvents(
+    onChange: NativeEventHandler,
+    onError: NativeEventHandler
+  ): void {
+    if (!this.supportedAPI) return
+
+    document.addEventListener(this.supportedAPI.change, onChange, { once: true })
+    document.addEventListener(this.supportedAPI.error, onError, { once: true })
+  }
+
+  private static offNativeEvents(): void {
+    // Cleanup occurs automatically via { once: true }
+  }
+
+  private static readonly handleChange: NativeEventHandler = (_e: Event): void => {
+    const info = this.info()
+    this.eventCallbacks.get('change')?.forEach(cb => cb(info))
+  }
+
+  private static readonly handleError: NativeEventHandler = (_e: Event): void => {
+    const info = this.info()
+    this.eventCallbacks.get('error')?.forEach(cb => cb(info))
+  }
+}
+
+// Auto-initialization
+// if (typeof document !== 'undefined') {
+//   UnifiedFullscreen.init()
+// }

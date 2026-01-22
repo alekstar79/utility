@@ -1,0 +1,121 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bright gradient background -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#667eea"/>
+      <stop offset="50%" stop-color="#764ba2"/>
+      <stop offset="100%" stop-color="#f093fb"/>
+    </linearGradient>
+    
+    <linearGradient id="titleGrad" x1="-50%" y1="0%" x2="150%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1920" height="1080" fill="url(#bgGrad)"/>
+
+  <!-- Grid -->
+  <g stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.15">
+    <line x1="0" y1="270" x2="1920" y2="270"/>
+    <line x1="0" y1="540" x2="1920" y2="540"/>
+    <line x1="0" y1="810" x2="1920" y2="810"/>
+    <line x1="480" y1="0" x2="480" y2="1080"/>
+    <line x1="1440" y1="0" x2="1440" y2="1080"/>
+  </g>
+
+  <!-- MAIN TITLE -->
+  <text x="960" y="360" font-family="'SF Pro Display', 'Inter', -apple-system, sans-serif" 
+        font-size="160" font-weight="900" fill="url(#titleGrad)" text-anchor="middle" 
+        stroke="#ffffff" stroke-width="1" letter-spacing="-0.03em">
+    utils
+  </text>
+
+  <!-- Subtitle -->
+  <text x="960" y="460" font-family="'Inter', -apple-system, sans-serif" 
+        font-size="42" font-weight="700" fill="#ffffff" text-anchor="middle" 
+        letter-spacing="0.02em" stroke="#764ba2" stroke-width="0.5">
+    120+ TypeScript Utility Functions
+  </text>
+
+  <!-- Categories -->
+  <g font-family="'Inter', sans-serif" font-weight="600" fill="#ffffff">
+    <g transform="translate(140, 620)">
+      <rect x="0" y="0" width="220" height="60" rx="24" fill="#ffffff" opacity="0.2"/>
+      <text x="110" y="38" font-size="28" text-anchor="middle">Animation</text>
+    </g>
+    
+    <g transform="translate(400, 620)">
+      <rect x="0" y="0" width="180" height="60" rx="24" fill="#ffffff" opacity="0.2"/>
+      <text x="90" y="38" font-size="28" text-anchor="middle">Async</text>
+    </g>
+    
+    <g transform="translate(630, 620)">
+      <rect x="0" y="0" width="180" height="60" rx="24" fill="#ffffff" opacity="0.2"/>
+      <text x="90" y="38" font-size="28" text-anchor="middle">DOM</text>
+    </g>
+    
+    <g transform="translate(860, 620)">
+      <rect x="0" y="0" width="180" height="60" rx="24" fill="#ffffff" opacity="0.2"/>
+      <text x="90" y="38" font-size="28" text-anchor="middle">Math</text>
+    </g>
+    
+    <g transform="translate(1090, 620)">
+      <rect x="0" y="0" width="220" height="60" rx="24" fill="#ffffff" opacity="0.2"/>
+      <text x="110" y="38" font-size="28" text-anchor="middle">FileSystem</text>
+    </g>
+    
+    <g transform="translate(1350, 620)">
+      <rect x="0" y="0" width="180" height="60" rx="24" fill="#ffffff" opacity="0.2"/>
+      <text x="90" y="38" font-size="28" text-anchor="middle">PRNG</text>
+    </g>
+  </g>
+
+  <!-- Icons -->
+  <g stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#ffffff">
+    <!-- Function (→) -->
+    <g transform="translate(350, 850)">
+      <path d="M 0 25 L 70 25"/>
+      <circle cx="75" cy="25" r="8"/>
+    </g>
+    
+    <!-- Chain () -->
+    <g transform="translate(750, 850)">
+      <circle cx="25" cy="25" r="12"/>
+      <circle cx="60" cy="25" r="12"/>
+      <path d="M 37 25 Q 45 25 53 25" stroke-width="4"/>
+    </g>
+    
+    <!-- brackets TypeScript -->
+    <g transform="translate(1150, 850)">
+      <rect x="8" y="12" width="64" height="56" rx="4" fill="#667eea"/>
+      <text x="42" y="48" font-family="'JetBrains Mono', monospace" font-size="24" 
+            fill="#ffffff" text-anchor="middle" font-weight="700">{}</text>
+    </g>
+    
+    <!-- ⚡ Async -->
+    <g transform="translate(1550, 750)">
+      <polyline points="15,25 45,55 25,75 55,55" stroke-width="4"/>
+    </g>
+  </g>
+
+  <g transform="translate(1630, 950)">
+    <rect x="-280" y="-45" width="500" height="65" rx="32" fill="#ffffff"/>
+    <rect x="-275" y="-40" width="490" height="55" rx="28" fill="#1e40af"/>
+    <circle cx="-245" cy="-13" r="18" fill="#10b981"/>
+    <text x="-40" y="-5" font-family="'JetBrains Mono', monospace" font-size="24" 
+          fill="#ffffff" text-anchor="middle" font-weight="700" letter-spacing="1px">
+      npm i @alekstar79/utils
+    </text>
+  </g>
+
+  <g font-family="'Inter', sans-serif" font-size="24" font-weight="600" fill="#ffffff">
+    <text x="215" y="50" text-anchor="end">90%+ Coverage</text>
+    <text x="215" y="80" text-anchor="end">Tree-shakeable</text>
+  </g>
+
+  <path d="M 0 1000 Q 480 950 960 1020 Q 1440 1090 1920 1020 L 1920 1080 L 0 1080 Z" 
+        fill="#ffffff" opacity="0.15"/>
+</svg>
