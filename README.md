@@ -1297,7 +1297,7 @@ randomColorPalette(5) // ["#FF5733", "#33FF57", ...]
 [Source Code](src/common/randomStr.ts)
 
 ```typescript
-import { randomString, randomStrings, presets, ALPHABETS } from '@alekstar79/utility/common/randomStr'
+import { randomString, randomStrings, presets, ALPHABETS } from '@alekstar79/utility'
 
 // Random string
 randomString(10)                                          // 'aB3xY8pQ2z'
@@ -1335,7 +1335,7 @@ console.log(gen.next().value) // New UUID
 [Source Code](src/common/hash.ts)
 
 ```typescript
-import { hash } from '@alekstar79/utility/common/hash'
+import { hash } from '@alekstar79/utility'
 
 // Simple hashing
 const simpleHash = await hash('Hello World')
@@ -1358,7 +1358,7 @@ async function verifyPassword(
 [Source Code](src/common/secureRandomInt.ts)
 
 ```typescript
-import { secureRandomInt } from '@alekstar79/utility/common/secureRandomInt'
+import { secureRandomInt } from '@alekstar79/utility'
 
 // Cryptographically secure random number
 const secureNum = secureRandomInt(0, 100) // Number from 0 to 100
@@ -1826,7 +1826,7 @@ resObs.disconnect()
 ### PRNG System (Pseudo-Random Number Generators)
 
 - `useSeededGenerator.ts` - Seeded Generator Management
-[Source Code]()
+[Source Code](src/prng/api/useSeededGenerator.ts)
 
 ```typescript
 import { type SeededGeneratorAPI, useSeededGenerator } from '@alekstar79/utility/prng'
