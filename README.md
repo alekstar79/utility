@@ -1993,8 +1993,6 @@ import * as utils from '@alekstar79/utility'
 
 ## [License MIT ©](LICENSE) [alekstar79](https://github.com/alekstar79)
 
----
-
 *Documentation updated: 2026*  
 *Library version: 1.0.0*  
 *Tags: utility, typescript, javascript, tools, library*
