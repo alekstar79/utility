@@ -1,5 +1,5 @@
 /** Generator creator */
-export type PRNGCreator = (seed: string | number) => Generator<number>
+export type PRNGFunctionGenerator = (seed: string | number) => Generator<number>
 
 /** Names of algorithms */
 export type PRNGAlgorithm =
@@ -23,6 +23,7 @@ export interface GeneratorConfig {
   readonly quality: PRNGQuality;
   readonly speed: PRNGSpeed;
   readonly description: string;
+  readonly seed: string | number
 }
 
 /** Options for useSeededGenerator */

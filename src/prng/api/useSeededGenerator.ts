@@ -13,11 +13,11 @@ export function useSeededGenerator(
   options: SeededGeneratorOptions = {}
 ): SeededGeneratorAPI {
   const algorithm = options.algorithm ?? 'mulberry32'
-  const creator = createGenerator(algorithm)
-  const generator = creator(seed)
-  const info = getAlgorithmInfo(algorithm)
+  const generator = createGenerator(algorithm)
+  const info = getAlgorithmInfo(algorithm, seed)
+  const gen = generator(seed)
 
-  const random = (): number => generator.next().value as number
+  const random = (): number => gen.next().value as number
 
   const rndInt = (min: number, max: number): number =>
     Math.floor(random() * (max - min + 1)) + min
@@ -65,7 +65,7 @@ export function useSeededGenerator(
   }
 
   return {
-    generator,
+    generator: gen,
     random,
     rndInt,
     rndFloat,

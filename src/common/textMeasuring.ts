@@ -48,7 +48,7 @@ function createObserver(input: HTMLInputElement, callback: Function): () => void
  *
  * @param {HTMLInputElement} input - HTMLInputElement to measure text from
  * @param {IOptionsTextWidth} options - Optional scale factor for width (default 1)
- * @returns {(function(): number)} - Function that returns current text width in pixels
+ * @returns {ReturnTextWidth}
  */
 export function useTextMeasuring(
   input: HTMLInputElement,

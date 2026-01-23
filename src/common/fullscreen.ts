@@ -54,7 +54,7 @@ export type EventCallback = (info: FullscreenInfo) => void;
 export type NativeEventHandler = (e: Event) => void;
 
 /**
- * Unified Fullscreen API Class
+ * Fullscreen API Class
  * - Auto vendor prefixes detection (mapping approach)
  * - iOS/Android fallbacks + video-only detection
  * - WHATWG NavigationUI support
@@ -73,7 +73,7 @@ export type NativeEventHandler = (e: Event) => void;
  * btn.addEventListener('click', async () => {
  *   try {
  *     // Enable fullscreen for videos (iOS safe)
- *     const state = await UnifiedFullscreen.enter(video, { navigationUI: 'hide' })
+ *     const state = await Fullscreen.enter(video, { navigationUI: 'hide' })
  *     console.log('Entered fullscreen:', state) // 'on'
  *   } catch (error) {
  *     const fsError = error as FullscreenError;
@@ -88,12 +88,12 @@ export type NativeEventHandler = (e: Event) => void;
  *
  * // Toggle with state check
  * document.getElementById('toggle-fs')!.addEventListener('click', async () => {
- *   const state = await UnifiedFullscreen.toggle(canvas)
+ *   const state = await Fullscreen.toggle(canvas)
  *
  *   // UI feedback
  *   document.body.classList.toggle('fullscreen-active', state === FullscreenState.ON)
  *
- *   console.log(UnifiedFullscreen.info())
+ *   console.log(Fullscreen.info())
  *   // {
  *   //   element: canvas,
  *   //   state: 'on',
@@ -104,7 +104,7 @@ export type NativeEventHandler = (e: Event) => void;
  *
  * @example Events + React-a similar hook
  * // Subscribe to events (returns unsubscribe)
- * const unsubscribeChange = UnifiedFullscreen.on('change', (info) => {
+ * const unsubscribeChange = Fullscreen.on('change', (info) => {
  *   console.log('Fullscreen changed:', info.state)
  *
  *   // UI update
@@ -113,7 +113,7 @@ export type NativeEventHandler = (e: Event) => void;
  *   }
  * })
  *
- * const unsubscribeError = UnifiedFullscreen.on('error', (info) => {
+ * const unsubscribeError = Fullscreen.on('error', (info) => {
  *   console.error('Fullscreen error:', info)
  * })
  *
@@ -124,13 +124,13 @@ export type NativeEventHandler = (e: Event) => void;
  * @example SSR-safe + checking of support
  * // Safe in Next.js / SSR
  * if (typeof window !== 'undefined') {
- *   console.log('Fullscreen supported:', UnifiedFullscreen.isSupported)
- *   console.log('Enabled:', UnifiedFullscreen.isEnabled)
- *   console.log('Current state:', UnifiedFullscreen.state)
+ *   console.log('Fullscreen supported:', Fullscreen.isSupported)
+ *   console.log('Enabled:', Fullscreen.isEnabled)
+ *   console.log('Current state:', Fullscreen.state)
  *
  *   // Cleanup at unmount
  *   window.addEventListener('beforeunload', () => {
- *     UnifiedFullscreen.destroy()
+ *     Fullscreen.destroy()
  *   })
  * }
  *
@@ -138,7 +138,7 @@ export type NativeEventHandler = (e: Event) => void;
  * document.querySelectorAll('.gallery img').forEach(img => {
  *   img.addEventListener('dblclick', async () => {
  *     try {
- *       await UnifiedFullscreen.enter(img as HTMLElement)
+ *       await Fullscreen.enter(img as HTMLElement)
  *     } catch (error) {
  *       console.log('Fullscreen not available:', error)
  *     }
@@ -148,15 +148,15 @@ export type NativeEventHandler = (e: Event) => void;
  * @example Auto-exit with ESC + UX improvements
  * // Handling the ESC key
  * document.addEventListener('keydown', async (e) => {
- *   if (e.key === 'Escape' && UnifiedFullscreen.state === FullscreenState.ON) {
- *     await UnifiedFullscreen.exit()
+ *   if (e.key === 'Escape' && Fullscreen.state === FullscreenState.ON) {
+ *     await Fullscreen.exit()
  *   }
  * })
  *
  * // Show the button only if supported
- * if (UnifiedFullscreen.isSupported) {
+ * if (Fullscreen.isSupported) {
  *   fullscreenBtn.style.display = 'block'
- *   fullscreenBtn.title = `Fullscreen (${UnifiedFullscreen.isEnabled ? 'Ready' : 'Disabled'})`
+ *   fullscreenBtn.title = `Fullscreen (${Fullscreen.isEnabled ? 'Ready' : 'Disabled'})`
  * }
  *
  * @example Styles for fullscreen (:fullscreen)

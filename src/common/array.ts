@@ -6,7 +6,7 @@ export class ExtendedArray<T> extends Array<T>
     Object.setPrototypeOf(this, ExtendedArray.prototype)
   }
 
-  private getAdjacentIndex(direction: 'prev' | 'next', value: T): number | undefined
+  getAdjacentIndex(direction: 'prev' | 'next', value: T): number | undefined
   {
     if (this.length === 0) return undefined
 

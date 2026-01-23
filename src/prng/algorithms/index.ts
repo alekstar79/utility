@@ -2,7 +2,7 @@
  * Registry & Factory: All algorithms in one place
  */
 
-import type { PRNGAlgorithm, GeneratorConfig, PRNGCreator } from '@/prng/core/types'
+import type { PRNGAlgorithm, GeneratorConfig, PRNGFunctionGenerator } from '@/prng/core/types'
 import { mulberry32Generator } from './mulberry32'
 import { xorshift128Generator } from './xorshift128'
 import { sfc32Generator } from './sfc32'
@@ -26,7 +26,8 @@ export const PRNG_INFO: Record<PRNGAlgorithm, GeneratorConfig> = {
     period: '2¹²⁸ - 1',
     quality: 'outstanding',
     speed: 'fast',
-    description: 'High-quality 128-bit PRNG, passes BigCrush'
+    description: 'High-quality 128-bit PRNG, passes BigCrush',
+    seed: 'xorshift128seed'
   },
   mulberry32: {
     algorithm: 'mulberry32',
@@ -34,7 +35,8 @@ export const PRNG_INFO: Record<PRNGAlgorithm, GeneratorConfig> = {
     period: '2³² - 1',
     quality: 'good',
     speed: 'very-fast',
-    description: 'Fast 32-bit PRNG, good quality'
+    description: 'Fast 32-bit PRNG, good quality',
+    seed: 'mulberry32seed'
   },
   jsf32: {
     algorithm: 'jsf32',
@@ -42,7 +44,8 @@ export const PRNG_INFO: Record<PRNGAlgorithm, GeneratorConfig> = {
     period: '~2¹²⁷',
     quality: 'excellent',
     speed: 'fast',
-    description: 'Bob Jenkins Small Fast, passes TestU01'
+    description: 'Bob Jenkins Small Fast, passes TestU01',
+    seed: 'jsf32seed'
   },
   sfc32: {
     algorithm: 'sfc32',
@@ -50,7 +53,8 @@ export const PRNG_INFO: Record<PRNGAlgorithm, GeneratorConfig> = {
     period: '~2²⁵⁶',
     quality: 'excellent',
     speed: 'very-fast',
-    description: 'Simple Fast Chaotic, excellent period'
+    description: 'Simple Fast Chaotic, excellent period',
+    seed: 'sfc32seed'
   },
   lcg: {
     algorithm: 'lcg',
@@ -58,24 +62,25 @@ export const PRNG_INFO: Record<PRNGAlgorithm, GeneratorConfig> = {
     period: '2³² - 1',
     quality: 'good',
     speed: 'very-fast',
-    description: 'Simple but weak, good for testing only'
+    description: 'Simple but weak, good for testing only',
+    seed: 'lcgseed'
   }
 }
 
 /** Factory: get a generator by name */
-export const createGenerator = (algorithm: PRNGAlgorithm): PRNGCreator => {
-  const creator = PRNG_ALGORITHMS[algorithm]
+export const createGenerator = (algorithm: PRNGAlgorithm): PRNGFunctionGenerator => {
+  const grnerator = PRNG_ALGORITHMS[algorithm]
 
-  if (!creator) {
+  if (!grnerator) {
     throw new Error(`Unknown algorithm: ${algorithm}. Available: ${Object.keys(PRNG_ALGORITHMS).join(', ')}`);
   }
 
-  return creator
+  return grnerator
 }
 
 /** Get information about the algorithm */
-export const getAlgorithmInfo = (algorithm: PRNGAlgorithm): GeneratorConfig => {
-  return PRNG_INFO[algorithm]
+export const getAlgorithmInfo = (algorithm: PRNGAlgorithm, seed: string | number): GeneratorConfig => {
+  return { ...PRNG_INFO[algorithm], seed }
 }
 
 /** Get all available algorithms */

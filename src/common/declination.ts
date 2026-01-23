@@ -193,7 +193,7 @@ export function formatPlural(
   return template
     .replace('{count}', String(n))
     .replace('{word}', declined)
-    .replace('{plural}', declined);
+    .replace('{plural}', declined)
 }
 
 /**

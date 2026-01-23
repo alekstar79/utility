@@ -127,9 +127,9 @@ export class Clipboard
   private readonly _stats: ClipboardStats
 
   constructor() {
-    this.supportsClipboardAPI = typeof navigator !== 'undefined'
-      && 'clipboard' in navigator
-      && typeof (navigator as any).clipboard?.writeText === 'function'
+    this.supportsClipboardAPI =
+      typeof navigator !== 'undefined' && 'clipboard' in navigator &&
+      typeof (navigator as any).clipboard?.writeText === 'function'
 
     this._stats = { operations: 0, successRate: 0, fallbackUsed: 0 }
   }

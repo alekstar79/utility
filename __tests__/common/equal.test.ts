@@ -1,6 +1,6 @@
 import { deepEqual, shallowEqual } from '../../src/common/equal'
 
-describe('deepEqual - универсальное глубокое сравнение', () => {
+describe('deepEqual - universal deep comparison', () => {
   describe('01. PRIMITIVES (6)', () => {
     it('strict: Object.is equality', () => {
       expect(deepEqual(42, 42)).toBe(true)
@@ -32,11 +32,11 @@ describe('deepEqual - универсальное глубокое сравнен
       expect(deepEqual(1n as any, 1)).toBe(false)
     })
 
-    it('ignoreUndefined работает', () => {
+    it('ignoreUndefined is working', () => {
       expect((deepEqual as any)({ a: 1 }, { a: 1, b: undefined }, { ignoreUndefined: true })).toBe(true)
     })
 
-    it('detailed mode возвращает различия', () => {
+    it('detailed mode returns the differences', () => {
       const result = deepEqual(1, 2, { detailed: true }) as any
       expect(result.equal).toBe(false)
       expect(result.differences).toHaveLength(1)
@@ -45,33 +45,33 @@ describe('deepEqual - универсальное глубокое сравнен
   })
 
   describe('02. ARRAYS (4)', () => {
-    it('равные массивы', () => {
+    it('equal arrays', () => {
       expect(deepEqual([1, 2], [1, 2])).toBe(true)
       expect(deepEqual([1, { a: 1 }], [1, { a: 1 }])).toBe(true)
     })
 
-    it('разная длина → false', () => {
+    it('different length → false', () => {
       expect(deepEqual([1, 2], [1])).toBe(false)
     })
 
-    it('разные элементы', () => {
+    it('different elements', () => {
       expect(deepEqual([1, 2], [1, 3])).toBe(false)
       expect(deepEqual([1, 2], [2, 1])).toBe(false)
     })
 
-    it('пустые массивы', () => {
+    it('empty arrays', () => {
       expect(deepEqual([], [])).toBe(true)
       expect(deepEqual([], [1])).toBe(false)
     })
   })
 
   describe('03. OBJECTS (5)', () => {
-    it('равные объекты', () => {
+    it('equal objects', () => {
       expect(deepEqual({ a: 1 }, { a: 1 })).toBe(true)
       expect(deepEqual({ a: 1, b: { c: 2 } }, { a: 1, b: { c: 2 } })).toBe(true)
     })
 
-    it('разные ключи', () => {
+    it('different keys', () => {
       expect(deepEqual({ a: 1 }, { a: 1, b: 2 })).toBe(false)
       expect(deepEqual({ a: 1, b: 2 }, { a: 1 })).toBe(false)
     })
@@ -83,17 +83,17 @@ describe('deepEqual - универсальное глубокое сравнен
       expect(deepEqual(obj1, obj2)).toBe(true)
     })
 
-    it('ignoreUndefined пропускает undefined', () => {
+    it('ignoreUndefined skips undefined', () => {
       expect((deepEqual as any)({ a: 1, b: undefined }, { a: 1 }, { ignoreUndefined: true })).toBe(true)
     })
 
-    it('разные значения', () => {
+    it('different values', () => {
       expect(deepEqual({ a: 1 }, { a: 2 })).toBe(false)
     })
   })
 
   describe('04. MAP/SET/DATE (5)', () => {
-    it('Date сравнение по времени', () => {
+    it('Date time comparison', () => {
       const d1 = new Date(2023, 0, 1)
       const d2 = new Date(2023, 0, 1)
       expect(deepEqual(d1, d2)).toBe(true)
@@ -101,12 +101,12 @@ describe('deepEqual - универсальное глубокое сравнен
       expect(deepEqual(d1, d3)).toBe(false)
     })
 
-    it('Map сравнение содержимого', () => {
+    it('Map content comparison', () => {
       expect(deepEqual(new Map([['a', 1]]), new Map([['a', 1]]))).toBe(true)
       expect(deepEqual(new Map([['a', 1]]), new Map([['a', 2]]))).toBe(false)
     })
 
-    it('Set сравнение элементов', () => {
+    it('Set element comparison', () => {
       expect(deepEqual(new Set([1, 2]), new Set([1, 2]))).toBe(true)
       expect(deepEqual(new Set([1]), new Set([2]))).toBe(false)
     })
@@ -115,20 +115,20 @@ describe('deepEqual - универсальное глубокое сравнен
       expect(deepEqual(new Set([1, 2]) as any, [1, 2])).toBe(false)
     })
 
-    it('пустые коллекции', () => {
+    it('empty collections', () => {
       expect(deepEqual(new Map(), new Map())).toBe(true)
       expect(deepEqual(new Set(), new Set())).toBe(true)
     })
   })
 
   describe('05. CIRCULAR REFERENCES (3)', () => {
-    it('циклические ссылки', () => {
+    it('cyclic links', () => {
       const obj: any = { a: 1 }
       obj.self = obj
       expect(deepEqual(obj, obj)).toBe(true)
     })
 
-    it('разные циклические объекты', () => {
+    it('different cyclic objects', () => {
       const obj1: any = { a: 1 }
       obj1.self = obj1
       const obj2: any = { a: 1 }
@@ -136,7 +136,7 @@ describe('deepEqual - универсальное глубокое сравнен
       expect(deepEqual(obj1, obj2)).toBe(true)
     })
 
-    it('цикл + обычный объект', () => {
+    it('loop + regular object', () => {
       const obj1: any = { a: 1 }
       obj1.self = obj1
       expect(deepEqual(obj1, { a: 1 })).toBe(false)
@@ -144,28 +144,28 @@ describe('deepEqual - универсальное глубокое сравнен
   })
 
   describe('06. MAX DEPTH (2)', () => {
-    it('глубокие объекты > maxDepth → false', () => {
+    it('deep objects > maxDepth → false', () => {
       const obj1 = { a: { b: { c: { d: 1 } } } }
       const obj2 = { a: { b: { c: { d: 1 } } } }
       expect(deepEqual(obj1, obj2, { maxDepth: 2 } as any)).toBe(false)
     })
 
-    it('maxDepth по умолчанию = 20', () => {
+    it('default maxDepth = 20', () => {
       expect(deepEqual({ a: 1 }, { a: 1 })).toBe(true)
     })
   })
 
   describe('07. SHALLOW EQUAL (3)', () => {
-    it('shallowEqual базовое', () => {
+    it('shallowEqual basic', () => {
       expect(shallowEqual({ a: 1 }, { a: 1 })).toBe(true)
       expect(shallowEqual({ a: 1 }, { a: 2 })).toBe(false)
     })
 
-    it('shallowEqual разные ключи', () => {
+    it('shallowEqual different keys', () => {
       expect(shallowEqual({ a: 1 }, { a: 1, b: 2 })).toBe(false)
     })
 
-    it('shallowEqual массивы первого уровня', () => {
+    it('shallowEqual arrays of the first level', () => {
       expect(shallowEqual([1, 2], [1, 2])).toBe(true)
       expect(shallowEqual([1, 2], [1, { b: 2 }])).toBe(false)
     })

@@ -108,8 +108,9 @@ export function mask(value: string | number, presetOrOptions?: MaskPreset | Part
   let result = applyMask(str, opts.mask, opts.count, opts.position, opts.maskSpaces)
 
   // Grouping for cards
-  if (opts.separator && str.length > 8) {
-    result = result.replace(/(.{4})(.{4})/g, `$1${opts.separator}$2`)
+  if (opts.separator && str.length > opts.count * 2) {
+    const regexp = new RegExp(`(.{${opts.count}})(.{${opts.count}})`, 'g')
+    result = result.replace(regexp, `$1${opts.separator}$2`)
   }
 
   return result

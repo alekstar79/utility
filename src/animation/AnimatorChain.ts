@@ -20,7 +20,7 @@ import { Animator } from '@/animation/Animator'
  * )
  *
  * // In parallel
- * await Promise.all(chain.animateParallel(element, updateFn))
+ * await Promise.all(chain.parallel(element, updateFn))
  */
 export class AnimatorChain<T = unknown>
 {

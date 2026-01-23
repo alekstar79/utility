@@ -177,7 +177,7 @@ export { Animator, AnimatorChain, Timing, EASING } from '@/animation'
 // prng
 export type {
   PRNGAlgorithm,
-  PRNGCreator,
+  PRNGFunctionGenerator,
   GeneratorConfig,
   SeededGeneratorOptions,
   SeededGeneratorAPI,

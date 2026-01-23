@@ -56,13 +56,13 @@ describe('Timing', () => {
   })
 })
 
-describe('Timing - дополнительные случаи', () => {
-  it('учитывает delay и применяет easing', () => {
+describe('Timing - additional cases', () => {
+  it('considers delay and applies easing', () => {
     const timing = new Timing({ duration: 1000, delay: 200, easing: EASING.easeInQuad })
     timing.update(0)
 
     const beforeDelay = timing.update(100)
-    expect(beforeDelay.progress).toBe(0) // delay ещё не прошёл
+    expect(beforeDelay.progress).toBe(0) // delay has not passed yet
 
     const mid = timing.update(700) // elapsed = 500
     // normalizedProgress = 0.5, easeInQuad -> 0.25
@@ -71,7 +71,7 @@ describe('Timing - дополнительные случаи', () => {
     expect(mid.isComplete).toBe(false)
   })
 
-  it('reset сбрасывает старт и прогресс', () => {
+  it('resets start and progress', () => {
     const timing = new Timing({ duration: 500 })
     timing.update(0)
     timing.update(250)
@@ -84,7 +84,7 @@ describe('Timing - дополнительные случаи', () => {
   })
 })
 
-describe('Animator управление кадрами', () => {
+describe('Animator frame management', () => {
   let originalRaf: typeof requestAnimationFrame
   let originalCancelRaf: typeof cancelAnimationFrame
   let queue: Array<(ts: number) => void>
@@ -96,7 +96,7 @@ describe('Animator управление кадрами', () => {
 
   beforeEach(() => {
     queue = []
-    // упрощённый RAF: ставим колбэк в очередь, возвращаем id
+    // simplified RAF: put the callback in the queue, return the id
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     global.requestAnimationFrame = ((cb: FrameRequestCallback) => {
       queue.push(cb)
@@ -115,28 +115,28 @@ describe('Animator управление кадрами', () => {
     if (cb) cb(ts)
   }
 
-  it('cancel прерывает анимацию и вызывает cleanup', async () => {
+  it('cancel interrupts the animation and calls cleanup', async () => {
     const animator = new Animator({ duration: 100 })
     const update = jest.fn(() => true)
 
     const promise = animator.animate({} as any, update)
 
-    runNext(0)   // первый кадр
+    runNext(0)   // first frame
     expect(update).toHaveBeenCalledTimes(1)
 
     animator.cancel()
-    runNext(16)  // следующий кадр завершает промис из-за isCancelled
+    runNext(16)  // next frame completes the promise due to isCancelled
 
     await promise
     expect(global.cancelAnimationFrame).toHaveBeenCalledTimes(1)
   })
 
-  it('reset снимает флаг отмены', async () => {
+  it('reset removes the cancel flag', async () => {
     const animator = new Animator({ duration: 100 })
     animator.cancel()
     animator.reset()
 
-    const update = jest.fn(() => false) // сразу завершить
+    const update = jest.fn(() => false) // finish immediately
     const promise = animator.animate({} as any, update)
     runNext(0)
 
@@ -144,7 +144,7 @@ describe('Animator управление кадрами', () => {
     expect(update).toHaveBeenCalledTimes(1)
   })
 
-  it('chain создаёт AnimatorChain', () => {
+  it('chain creates AnimatorChain', () => {
     const animator = new Animator({ duration: 10 })
     const chain = animator.chain({ duration: 5 }, { duration: 15 })
     expect(chain).toBeInstanceOf(AnimatorChain)
@@ -152,7 +152,7 @@ describe('Animator управление кадрами', () => {
 })
 
 describe('AnimatorChain parallel', () => {
-  it('корректно рассчитывает совокупный progress для параллели', async () => {
+  it('correctly calculates the cumulative progress for parallel', async () => {
     const chain = AnimatorChain.create(
       { duration: 100 },
       { duration: 100 }
@@ -162,7 +162,7 @@ describe('AnimatorChain parallel', () => {
       .spyOn(Animator.prototype, 'animate')
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .mockImplementation(function (this: any, _target, fn) {
-        // эмулируем единичный кадр с progress 0.5
+        // emulating a single frame with progress 0.5
         fn({
           progress: 0.5,
           normalizedProgress: 0.5,

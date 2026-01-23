@@ -21,7 +21,7 @@
   "files": [
     "src",
     "dist",
-    "README.md",
+    "README_RU.md",
     "LICENSE"
   ],
   "main": "./dist/utils.umd.js",
@@ -44,7 +44,8 @@
     "test:ci": "jest --ci --coverage",
     "type-check": "tsc --noEmit",
     "preview": "vite preview",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build",
+    "transform": "tsx scripts/transform.ts"
   },
   "devDependencies": {
     "@jest/globals": "^30.2.0",
@@ -60,6 +61,7 @@
     "jsdom": "^27.2.0",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
     "vite-plugin-dts": "^4.5.4"

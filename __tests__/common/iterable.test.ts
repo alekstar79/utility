@@ -7,30 +7,32 @@ describe('ExtendedArray', () => {
   describe('getAdjacentIndex', () => {
     it('should return undefined when value not found', () => {
       const array = extendedArray([1, 2, 3])
-      expect(array['getAdjacentIndex']('prev', 5)).toBeUndefined()
-      expect(array['getAdjacentIndex']('next', 5)).toBeUndefined()
+      expect(array.getAdjacentIndex('prev', 5)).toBeUndefined()
+      expect(array.getAdjacentIndex('next', 5)).toBeUndefined()
     })
 
     it('should return correct previous index for first element', () => {
       const array = extendedArray([1, 2, 3])
-      expect(array['getAdjacentIndex']('prev', 1)).toBe(2)
+      expect(array.getAdjacentIndex('prev', 1)).toBe(2)
     })
 
     it('should return correct next index for last element', () => {
       const array = extendedArray([1, 2, 3])
-      expect(array['getAdjacentIndex']('next', 3)).toBe(0)
+      expect(array.getAdjacentIndex('next', 3)).toBe(0)
     })
 
     it('should handle single element array', () => {
       const array = extendedArray([1])
-      expect(array['getAdjacentIndex']('prev', 1)).toBe(0)
-      expect(array['getAdjacentIndex']('next', 1)).toBe(0)
+      expect(array.getAdjacentIndex('prev', 1)).toBe(0)
+      expect(array.getAdjacentIndex('next', 1)).toBe(0)
     })
 
     it('should return undefined for empty array', () => {
       const array = extendedArray([])
-      expect(array['getAdjacentIndex']('prev', 1)).toBeUndefined()
-      expect(array['getAdjacentIndex']('next', 1)).toBeUndefined()
+      // @ts-ignore
+      expect(array.getAdjacentIndex('prev', 1)).toBeUndefined()
+      // @ts-ignore
+      expect(array.getAdjacentIndex('next', 1)).toBeUndefined()
     })
   })
 
@@ -57,6 +59,7 @@ describe('ExtendedArray', () => {
 
     it('should return undefined for empty array', () => {
       const array = extendedArray([])
+      // @ts-ignore
       expect(array.prev(1)).toBeUndefined()
     })
 
@@ -91,6 +94,7 @@ describe('ExtendedArray', () => {
 
     it('should return undefined for empty array', () => {
       const array = extendedArray([])
+      // @ts-ignore
       expect(array.next(1)).toBeUndefined()
     })
 
@@ -126,7 +130,9 @@ describe('ExtendedArray', () => {
   describe('edge cases', () => {
     it('should handle empty array', () => {
       const array = extendedArray([])
+      // @ts-ignore
       expect(array.prev(1)).toBeUndefined()
+      // @ts-ignore
       expect(array.next(1)).toBeUndefined()
     })
 

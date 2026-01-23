@@ -6,7 +6,7 @@ export type { ObserverEntry, ObserverCallback, ObserverController } from './type
  *   createMutationObserver,
  *   createIntersectionObserver,
  *   createResizeObserver
- * } from './index.js'
+ * } from './index.ts'
  *
  * const target = document.getElementById('target')!
  *
@@ -26,7 +26,7 @@ export type { ObserverEntry, ObserverCallback, ObserverController } from './type
  * })
  *
  * // Multiple elements
- * const elements = document.querySelectorAll('.item');
+ * const elements = document.querySelectorAll('.item')
  * const multiMutObs = createMutationObserverMultiple(
  *   Array.from(elements),
  *   (entry) => console.log('Mutated')

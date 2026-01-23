@@ -1,6 +1,6 @@
 export type {
   PRNGAlgorithm,
-  PRNGCreator,
+  PRNGFunctionGenerator,
   GeneratorConfig,
   SeededGeneratorOptions,
   SeededGeneratorAPI,

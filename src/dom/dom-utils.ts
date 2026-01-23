@@ -50,21 +50,21 @@ export type SafeElement<T extends Element = Element> = T | null;
  * Type guard to check if value is a valid DOM element
  */
 export function isElement(value: unknown): value is Element {
-  return value instanceof Element;
+  return value instanceof Element
 }
 
 /**
  * Check if element is currently attached to DOM
  */
 export function isElementInDOM(element: Element): boolean {
-  return document.documentElement.contains(element);
+  return document.documentElement.contains(element)
 }
 
 /**
  * Type guard for TouchEvent (handles both active touches and changed touches)
  */
 export function isTouchEvent(event: Event): event is TouchEvent {
-  return 'touches' in event || 'changedTouches' in event;
+  return 'touches' in event || 'changedTouches' in event
 }
 
 /**
@@ -75,7 +75,7 @@ export function supportsObservers(): boolean {
   return (
     typeof IntersectionObserver !== 'undefined' &&
     typeof ResizeObserver !== 'undefined'
-  );
+  )
 }
 
 // COORDINATE SYSTEM UTILITIES
@@ -92,7 +92,7 @@ export function supportsObservers(): boolean {
  *
  * @example
  * ```typescript
- * const coords = extractCoordinates(event);
+ * const coords = extractCoordinates(event)
  * // Works with touch, mouse, or pointer events
  * ```
  */
@@ -130,9 +130,9 @@ export function extractCoordinates(event: InteractionEvent): Point {
  *
  * @example
  * ```typescript
- * const scroll = getAccumulatedScroll(element);
- * const absoluteX = event.clientX + scroll.left;
- * const absoluteY = event.clientY + scroll.top;
+ * const scroll = getAccumulatedScroll(element)
+ * const absoluteX = event.clientX + scroll.left
+ * const absoluteY = event.clientY + scroll.top
  * ```
  */
 export function getAccumulatedScroll(element: Element): ScrollOffset {
@@ -183,9 +183,9 @@ export function getAccumulatedScroll(element: Element): ScrollOffset {
  * @example
  * ```typescript
  * element.addEventListener('click', (event) => {
- *   const point = getDocumentCoordinates(event);
- *   console.log(`Absolute position: ${point.x}, ${point.y}`);
- * });
+ *   const point = getDocumentCoordinates(event)
+ *   console.log(`Absolute position: ${point.x}, ${point.y}`)
+ * })
  * ```
  */
 export function getDocumentCoordinates(event: InteractionEvent): Point {
@@ -278,7 +278,7 @@ export function getScrollPosition(target: Element | Window = window): ScrollOffs
  *
  * @example
  * ```typescript
- * setScrollPosition(element, { top: 500, left: 0 }, true); // Smooth scroll
+ * setScrollPosition(element, { top: 500, left: 0 }, true) // Smooth scroll
  * ```
  */
 export function setScrollPosition(
@@ -326,7 +326,7 @@ export function setScrollPosition(
  * @example
  * ```typescript
  * if (isScrolledToBottom(container, 100)) {
- *   loadMoreItems();
+ *   loadMoreItems()
  * }
  * ```
  */
@@ -359,9 +359,9 @@ export function isScrolledToTop(element: Element, threshold: number = 0): boolea
  * @example
  * ```typescript
  * traverseDOM(container, (el, depth) => {
- *   if (depth > 3) return false; // Stop deep traversal
- *   console.log(el.tagName);
- * });
+ *   if (depth > 3) return false // Stop deep traversal
+ *   console.log(el.tagName)
+ * })
  * ```
  */
 export function traverseDOM(
@@ -416,9 +416,9 @@ export function getParentChain(
  *
  * @example
  * ```typescript
- * const unsubscribe = addEventListener(window, 'scroll', handleScroll);
+ * const unsubscribe = addEventListener(window, 'scroll', handleScroll)
  * // Later:
- * unsubscribe();
+ * unsubscribe()
  * ```
  */
 export function addEventListener<K extends keyof WindowEventMap>(
@@ -470,7 +470,7 @@ export function addEventListener(
  *   className: 'btn btn-primary',
  *   attributes: { type: 'submit', disabled: 'true' },
  *   text: 'Submit'
- * });
+ * })
  * ```
  */
 export function createElement<T extends keyof HTMLElementTagNameMap>(
