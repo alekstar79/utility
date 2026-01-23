@@ -1823,7 +1823,7 @@ resObs.disconnect()
 ## Random Number Generation
 [Up to table of content](#-table-of-contents)
 
-### PRNG System (Pseudo-Random Number Generators)
+### [PRNG System](src/prng/README.md) (Pseudo-Random Number Generators)
 
 - `useSeededGenerator.ts` - Seeded Generator Management
 [Source Code](src/prng/api/useSeededGenerator.ts)
@@ -1991,7 +1991,7 @@ import { chunk, debounce } from '@alekstar79/utility'
 import * as utils from '@alekstar79/utility'
 ```
 
-### [License MIT ©](LICENSE) [alekstar79](https://github.com/alekstar79)
+## [License MIT ©](LICENSE) [alekstar79](https://github.com/alekstar79)
 
 ---
 
