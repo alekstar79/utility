@@ -1823,7 +1823,7 @@ resObs.disconnect()
 ## Random Number Generation
 [Up to table of content](#-table-of-contents)
 
-### [PRNG System](src/prng/README.md) (Pseudo-Random Number Generators)
+### [PRNG System (Pseudo-Random Number Generators)](src/prng/README.md) 
 
 - `useSeededGenerator.ts` - Seeded Generator Management
 [Source Code](src/prng/api/useSeededGenerator.ts)
