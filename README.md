@@ -82,14 +82,14 @@ fetchData.cancelAfter(5000)
   * [DOM Utilities](#dom-utilities-3)
   * [Observers](#observers-1)
   * [Random Number Generation](#random-number-generation)
-    * [PRNG System (Pseudo-Random Number Generators)](#prng-system-pseudo-random-number-generators)
+    * [PRNG System (Pseudo-Random Number Generators)](#prng-system--pseudo-random-number-generators--)
     * [PRNG Algorithms](#prng-algorithms)
   * [Browser Compatibility](#browser-compatibility)
     * [✅ Full Support](#-full-support)
     * [⚠️ Partial Support](#-partial-support)
   * [Web API Dependencies](#web-api-dependencies)
   * [Tree-shaking Support](#tree-shaking-support)
-    * [License MIT © alekstar79](#license-mit--alekstar79)
+  * [License MIT © alekstar79](#license-mit--alekstar79)
 <!-- TOC -->
 
 ## API Reference
