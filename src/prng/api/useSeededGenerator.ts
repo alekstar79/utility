@@ -2,8 +2,8 @@
  * API: Main Usage (useSeededGenerator)
  */
 
-import type { SeededGeneratorOptions, SeededGeneratorAPI } from '@/prng'
-import { createGenerator, getAlgorithmInfo } from '@/prng'
+import type { SeededGeneratorOptions, SeededGeneratorAPI } from '../core/types'
+import { createGenerator, getAlgorithmInfo } from '../algorithms'
 
 /**
  * The main API for the user

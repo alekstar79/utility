@@ -2,8 +2,8 @@
  * Selector: Smart selection of the optimal algorithm
  */
 
-import type { PRNGAlgorithm } from '@/prng'
-import { PRNG_INFO } from '@/prng'
+import type { PRNGAlgorithm } from '../core/types'
+import { PRNG_INFO } from '../algorithms'
 
 /**
  * Choosing an algorithm by priority

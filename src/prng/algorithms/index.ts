@@ -2,7 +2,7 @@
  * Registry & Factory: All algorithms in one place
  */
 
-import type { PRNGAlgorithm, GeneratorConfig, PRNGFunctionGenerator } from '@/prng/core/types'
+import type { PRNGAlgorithm, GeneratorConfig, PRNGFunctionGenerator } from '../core/types'
 import { mulberry32Generator } from './mulberry32'
 import { xorshift128Generator } from './xorshift128'
 import { sfc32Generator } from './sfc32'

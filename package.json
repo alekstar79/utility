@@ -17,22 +17,26 @@
   "bugs": {
     "url": "https://github.com/alekstar79/utility/issues"
   },
-  "type": "module",
   "files": [
     "src",
     "dist",
     "README.md",
     "LICENSE"
   ],
-  "main": "./dist/utils.umd.js",
+  "type": "module",
+  "sideEffects": false,
   "module": "./dist/utils.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/utils.es.js",
-      "require": "./dist/utils.umd.js"
-    }
+      "import": "./dist/utils.es.js"
+    },
+    "./common/*": "./dist/common/*.js",
+    "./animation/*": "./dist/animation/*.js",
+    "./observers/*": "./dist/observers/*.js",
+    "./dom/*": "./dist/dom/*.js",
+    "./prng/*": "./dist/prng/*.js"
   },
   "scripts": {
     "dev": "vite",

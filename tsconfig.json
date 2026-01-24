@@ -1,13 +1,9 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "useDefineForClassFields": true,
     "module": "ESNext",
-    "lib": [
-      "ESNext",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "useDefineForClassFields": true,
     "types": ["jest", "node", "jsdom"],
     "moduleResolution": "bundler",
     "strict": true,
@@ -22,15 +18,17 @@
     "noImplicitReturns": true,
     "skipLibCheck": true,
     "jsx": "preserve",
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true,
+    "verbatimModuleSyntax": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts"
-  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "__tests__", "dist"],
   "references": [
     {
       "path": "./tsconfig.node.json"

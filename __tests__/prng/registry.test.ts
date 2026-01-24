@@ -23,7 +23,7 @@ describe('Registry & Factory', () => {
   })
 
   it('getAlgorithmInfo works', () => {
-    const info = getAlgorithmInfo('xorshift128')
+    const info = getAlgorithmInfo('xorshift128', 'testseed')
     expect(info.name).toBe('Xorshift128+')
     expect(info.quality).toBe('outstanding')
   })

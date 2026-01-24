@@ -1,4 +1,5 @@
-import { SeededGeneratorAPI, useSeededGenerator } from '@/prng'
+import { useSeededGenerator } from '../prng/api/useSeededGenerator'
+import type { SeededGeneratorAPI } from '../prng/core/types'
 
 /**
  * @fileOverview Generates "Lorem ipsum" style text

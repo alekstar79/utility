@@ -2,7 +2,7 @@
  * Presets: Готовые конфигурации для common use cases
  */
 
-import type { SeededGeneratorOptions } from '@/prng'
+import type { SeededGeneratorOptions } from '../core/types'
 
 /** Быстрые игровые PRNG */
 export const PRESET_GAMING: SeededGeneratorOptions = {

@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "verbatimModuleSyntax": false,
+    "isolatedModules": false,
+    "noEmit": true,
+    "target": "ES2020"
+  },
+  "include": ["src/**/*", "__tests__/**/*"]
+}

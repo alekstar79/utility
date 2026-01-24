@@ -1,4 +1,4 @@
-import { mulberry32Generator } from '@/prng'
+import { mulberry32Generator } from '../prng/algorithms/mulberry32'
 
 /**
  * Shuffle options

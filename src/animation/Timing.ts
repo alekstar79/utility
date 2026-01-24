@@ -1,4 +1,4 @@
-import { AnimationState, EasingFn, TimingOptions } from '@/animation/types'
+import type { AnimationState, EasingFn, TimingOptions } from './types'
 
 /**
  * High-performance timing engine

@@ -1,6 +1,6 @@
-import { TimingOptions, UpdateCallback } from '@/animation/types.ts'
-import { AnimatorChain } from '@/animation/AnimatorChain'
-import { Timing } from '@/animation/Timing'
+import type { TimingOptions, UpdateCallback } from './types'
+import { AnimatorChain } from './AnimatorChain'
+import { Timing } from './Timing'
 
 /**
  * Animation orchestrator

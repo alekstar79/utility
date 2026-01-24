@@ -1,5 +1,5 @@
-import { TimingOptions, UpdateCallback } from '@/animation/types'
-import { Animator } from '@/animation/Animator'
+import type { TimingOptions, UpdateCallback } from './types'
+import { Animator } from './Animator'
 
 /**
  * Fluent animation chaining API
