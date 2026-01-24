@@ -1,6 +1,6 @@
 {
-  "name": "@alekstar79/utils",
-  "version": "1.0.0",
+  "name": "@alekstar79/utility",
+  "version": "1.0.2",
   "description": "Utilities TS",
   "keywords": [
     "utility",
@@ -9,13 +9,13 @@
   ],
   "license": "MIT",
   "author": "Aleksey Tarasenko <alekstar79@yandex.ru>",
-  "homepage": "https://github.com/alekstar79/utils.git",
+  "homepage": "https://github.com/alekstar79/utility.git",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alekstar79/utils.git"
+    "url": "git+https://github.com/alekstar79/utility.git"
   },
   "bugs": {
-    "url": "https://github.com/alekstar79/utils/issues"
+    "url": "https://github.com/alekstar79/utility/issues"
   },
   "type": "module",
   "files": [
