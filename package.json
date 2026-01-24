@@ -1,6 +1,6 @@
 {
   "name": "@alekstar79/utility",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Utilities TS",
   "keywords": [
     "utility",
@@ -32,11 +32,26 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/utils.es.js"
     },
-    "./common/*": "./dist/common/*.js",
-    "./animation/*": "./dist/animation/*.js",
-    "./observers/*": "./dist/observers/*.js",
-    "./dom/*": "./dist/dom/*.js",
-    "./prng/*": "./dist/prng/*.js"
+    "./animation/*": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/animation/*.js"
+    },
+    "./common/*": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/common/*.js"
+    },
+    "./dom/*": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/dom/*.js"
+    },
+    "./observers/*": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/observers/*.js"
+    },
+    "./prng/*": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/prng/*.js"
+    }
   },
   "scripts": {
     "dev": "vite",
