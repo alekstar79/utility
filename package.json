@@ -21,7 +21,7 @@
   "files": [
     "src",
     "dist",
-    "README_RU.md",
+    "README.md",
     "LICENSE"
   ],
   "main": "./dist/utils.umd.js",
