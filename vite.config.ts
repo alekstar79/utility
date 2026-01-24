@@ -20,14 +20,6 @@ export default defineConfig({
       include: ['src/**/*.ts']
     })
   ],
-  // css: {
-  //   devSourcemap: true,
-  //   preprocessorOptions: {
-  //     scss: {
-  //       api: 'modern-compiler'
-  //     }
-  //   }
-  // },
   build: {
     target: 'es2022',
     outDir: 'dist',
@@ -37,7 +29,7 @@ export default defineConfig({
       name: 'Utility',
       formats: ['es'],
       entry: resolve(__dirname, 'src/index.ts'),
-      // fileName: (format) => `utils.${format}.js`
+      // fileName: (format) => `index.${format}.js`
     },
     rollupOptions: {
       external: (id) => /^[@\./]/.test(id) === false,
