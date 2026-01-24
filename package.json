@@ -31,26 +31,6 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    },
-    "./animation/*": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/animation/*.js"
-    },
-    "./common/*": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/common/*.js"
-    },
-    "./dom/*": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/dom/*.js"
-    },
-    "./observers/*": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/observers/*.js"
-    },
-    "./prng/*": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/prng/*.js"
     }
   },
   "scripts": {
